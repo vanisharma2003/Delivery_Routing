@@ -14,7 +14,7 @@ const MapComponent = ({ directions, onMapReady }) => {
     <GoogleMap
       zoom={13}
       center={center}
-      mapContainerStyle={{ width: "100%", height: "700px" }}
+      mapContainerStyle={{ width: "100%", height: "500px" }}
       onLoad={onMapReady}
     >
       {directions && <DirectionsRenderer directions={directions} />}
