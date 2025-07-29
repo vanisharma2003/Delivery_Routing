@@ -17,6 +17,7 @@ function App() {
   const mapRef = useRef(null);
   const [completed, setCompleted] = useState(false);
   const [lastDeliveredId, setLastDeliveredId] = useState(null);
+  const [showStartButton,setShowStartButton]=useState(false) //state to track start button for every route 
 
   const handleMapReady = (map) => {
     mapRef.current = map;
@@ -26,6 +27,7 @@ function App() {
     const nearest = await getNearest(currentLocation, remaining, window.google);
     setLastDeliveredId(nearest.id);
     routeTo(nearest.position);
+    setShowStartButton(false)
   };
 
   const routeTo = (destination) => {
@@ -74,6 +76,7 @@ function App() {
     const next = await getNearest(lastDest, newRemaining, window.google);
     setLastDeliveredId(next.id);
     routeTo(next.position);
+    setShowStartButton(true)
   };
 
   return (
@@ -82,11 +85,13 @@ function App() {
   <MapComponent directions={directions} onMapReady={handleMapReady} />
 
   <div style={{ textAlign: "center", marginTop: "1rem" }}>
-    {!directions && <button onClick={startDelivery}>Start Delivery</button>}
+    {!directions && <button onClick={startDelivery}>Start Delivery</button>} 
+     {showStartButton && !completed && (
+      <button onClick={startDelivery}>Start Delivery</button>
+     )}
     {directions && !completed && (
       <>
         <button onClick={markDelivered}>Mark as Delivered</button>
-
         {/* Estimated time & distance */}
         {directions.routes?.[0]?.legs?.[0] && (
           <div style={{ marginTop: "10px", fontWeight: "bold" }}>
